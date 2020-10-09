@@ -13,11 +13,17 @@ app.use(express.json());
 
 // Import routes.
 
-const productRoute = require('./routes/products');
+const productsRoute = require('./routes/products');
+const categoriesRoute = require('./routes/categories');
+const ordersRoute = require('./routes/orders');
+const statusesRoute = require('./routes/statuses');
 
 // Routes middleware.
 
-app.use('/api/products', productRoute);
+app.use('/api/products', productsRoute);
+app.use('/api/categories', categoriesRoute);
+app.use('/api/orders', ordersRoute);
+app.use('/api/statuses', statusesRoute);
 
 mongoose.connect(DB_STRING,
     { useNewUrlParser: true, useUnifiedTopology: true },

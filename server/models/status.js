@@ -4,7 +4,7 @@ const statusSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-    }
+    },
 });
 
-module.exports = mongoose.model('Status', statusSchema);
+module.exports = mongoose.model('Status', statusSchema, 'statuses');

@@ -11,6 +11,10 @@ const productSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    price: {
+        type: Double,
+        required: true
+    },
     weight: {
         type: Double,
         required: true
@@ -22,4 +26,4 @@ const productSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('Product', productSchema, 'products');
