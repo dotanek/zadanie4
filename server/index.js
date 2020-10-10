@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // Constraints, would usually be secret but meh.
 
@@ -10,6 +11,7 @@ const DB_STRING = 'mongodb+srv://aji-zadanie4:1234567890@cluster-todo.fkkaz.mong
 // Middleware.
 
 app.use(express.json());
+app.use(cors());
 
 // Import routes.
 
