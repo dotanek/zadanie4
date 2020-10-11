@@ -70,11 +70,6 @@ router.post('/', async (req,res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    /*let status = await Status.findOne({ _id: new ObjectId(req.body.status_id) });
-    if (!status) {
-        return res.status(404).send('No status was found with given id.');
-    }*/
-
     // Eliminating duplicated ids (Because Product.find will return no duplicates aswell.)
     let uniqueProductIds = [...new Set(req.body.products.map(p => p.product_id))];
 

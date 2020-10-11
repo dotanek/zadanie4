@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import axios from 'axios';
 
 import Header from './components/Header/Header';
@@ -9,7 +9,8 @@ import Cart from './components/Cart/Cart';
 
 class App extends Component {
   state = {
-    products:[]
+    products:[],
+    error:""
   }
 
   constructor(props) {
@@ -29,7 +30,9 @@ class App extends Component {
         this.setState({ products:res.data });
       })
       .catch(e => {
-        this.setState({ error:e });
+        if (e.response) {
+          this.setState({ error:e.response.data });
+        }
       });
   }
 
@@ -119,13 +122,15 @@ class App extends Component {
     })
       .then(res => {
         console.log(res);
+        alert('Order created succesfully.');
         localStorage.removeItem('cartProducts');
-        document.location.href = '/';
+        window.location.href = '/';
         this.setState({ cartProducts:[] });
-        alert('Order created successfully.');
       })
       .catch(e => {
-        this.setState({ error:e });
+        if (e.response) {
+          this.setState({ error:e.response.data });
+        }
       });
   }
 
@@ -134,6 +139,11 @@ class App extends Component {
       <Grid container direction='column'>
         <Grid item container>
           <Header cartProducts={this.state.cartProducts}/>
+        </Grid>
+        <Grid item container justify='center' style={{paddingTop:'50px'}}>
+          <Typography color='error'>
+            {this.state.error}
+          </Typography>
         </Grid>
         <Grid style={{paddingTop:'50px'}}  item container>
           <Router>

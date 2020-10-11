@@ -45,6 +45,10 @@ class Cart extends Component {
     }
 
     verifyForm = () => {
+        if (this.props.cartProducts.length === 0) {
+            return this.setState({ validationError: 'You need at least one product to create an order.'});
+        }
+
         if (this.state.usernameValue.length === 0) {
             return this.setState({ validationError: 'Username cannot be empty.'});
         }
@@ -129,9 +133,13 @@ class Cart extends Component {
                             </Button>
                         </Grid>
                     </Grid>
+                    <Grid item container justify='center' style={{paddingTop:'100px'}}>
+                        <Typography color='error'>
+                            {this.state.validationError}
+                        </Typography>
+                    </Grid>
                 </Grid>
                 <Grid item xs={false} sm={1} md={2}/>
-                {this.state.validationError}
             </React.Fragment>
         );
     }
