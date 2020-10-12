@@ -60,7 +60,7 @@ class Cart extends Component {
         if (this.state.phoneValue.length === 0) {
             return this.setState({ validationError: 'Phone number cannot be empty.'});
         } else if (!/^[0-9]*$/g.test(this.state.phoneValue)) {
-            return this.setState({ validationError: 'Phone number cannot contain letters.'});
+            return this.setState({ validationError: 'Phone number must contain only letters.'});
         }
 
         this.props.submitOrder({
@@ -81,7 +81,7 @@ class Cart extends Component {
         return (
             <React.Fragment>
                 <Grid item xs={false} sm={1} md={2}/>
-                <Grid item container direction='column' xs spacing={4}>
+                <Grid item container direction='column' xs>
                     <Grid item>
                         <CartProducts 
                             cartProducts={this.props.cartProducts}
@@ -90,8 +90,8 @@ class Cart extends Component {
                             onClickButtonRemove={(_id) => this.props.onClickButtonRemove(_id)}
                         />
                     </Grid>
-                    <Grid item container>
-                        <Grid item container direction='column' xs={6} spacing={2}>
+                    <Grid item container style={{marginTop:'50px'}}>
+                        <Grid item container direction='column' xs={6} spacing={2} style={{paddingLeft:'30px'}}>
                             <Grid item>
                                 <Typography variant='h5'>
                                     User data
@@ -122,11 +122,11 @@ class Cart extends Component {
                                 />
                             </Grid>
                         </Grid>
-                        <Grid item container xs={6} align='right' justify='flex-end' style={{marginLeft:'10px',marginTop:'20px'}}>
+                        <Grid item container xs={6} justify='flex-end' alignItems='flex-end'>
                             <Button 
                                 variant='contained'
                                 color='primary'
-                                style={{width:'60%',minWidth:'60%',height:'40%',marginTop:'15%'}}
+                                style={{width:'60%',minWidth:'60%',height:'40%'}}
                                 onClick={this.verifyForm}
                             >
                                 ORDER

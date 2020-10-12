@@ -22,16 +22,17 @@ class Shop extends Component {
         return (
             <React.Fragment>
                 <Grid item xs={false} sm={1}/>
-                <Grid item container direction='column' xs spacing={2}>
-                    <Grid item>
+                <Grid item container direction='column' xs>
+                    <Grid item style={{ padding:'20px' }}>
                         <TextField
                             fullWidth
                             placeholder='Type something to search for a product.'
                             value={this.state.searchFieldValue}
                             onChange={this.onChangeSearchField}
+                            
                         />
                     </Grid>
-                    <Grid item>
+                    <Grid item style={{marginTop:'40px'}}>
                         <Products
                             filter={this.state.filter}
                             products={this.props.products}

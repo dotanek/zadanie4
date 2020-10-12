@@ -27,7 +27,7 @@ router.put('/:id', async (req,res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    let order = await Order.findOne({ _id: new ObjectId(id) });
+    let order = await Order.findOne({ _id: ObjectId(id) });
     if (!order) {
         return res.status(404).send('Order with given id was not found.');
     }
@@ -74,26 +74,26 @@ router.post('/', async (req,res) => {
     let uniqueProductIds = [...new Set(req.body.products.map(p => p.product_id))];
 
     products = await Product.find({
-        _id: { $in: uniqueProductIds.map(i => new ObjectId(i)) }
+        _id: { $in: uniqueProductIds.map(i => ObjectId(i)) }
     });
 
     if (uniqueProductIds.length !== products.length) {
         return res.status(404).send('At least one product for given ids was not found.');
     }
 
-    let status = await Status.find({ _name:'UNCONFIRMED' });
+    let status = await Status.findOne({ name:'UNCONFIRMED' });
     if (!status) {
         return res.status(404).send('Error occured during creating an order.');
     }
 
     let order = new Order({
-        status_id: new ObjectId(status._id),
+        status_id: ObjectId(status._id),
         username: req.body.username,
         email: req.body.email,
         phone: req.body.phone,
         products: req.body.products.map(p => {
             return { 
-                product_id: new ObjectId(p.product_id),
+                product_id: ObjectId(p.product_id),
                 quantity: p.quantity
             }
         })

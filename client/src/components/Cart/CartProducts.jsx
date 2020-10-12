@@ -88,7 +88,7 @@ class CartProducts extends Component {
                 <TableRow>
                     <TableCell align='right' colSpan="4">
                         <Typography>
-                            Total order price: <span style={{marginLeft:'20px',fontSize:'20px'}}>{this.countTotalOrderPrice()}</span>
+                            Total order price: <span style={{marginLeft:'20px',fontSize:'20px'}}>{this.countTotalOrderPrice().toFixed(2)}</span>
                         </Typography>
                     </TableCell>
                 </TableRow>

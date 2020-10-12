@@ -21,7 +21,7 @@ router.get('/:id', async (req,res) => {
         return res.status(404).send('Invalid id was given.');
     }
 
-    let product = await Product.findOne({ _id: new ObjectId(id) });
+    let product = await Product.findOne({ _id: ObjectId(id) });
     if (!product) {
         return res.status(404).send('Product with given id was not found.');
     }
@@ -35,7 +35,7 @@ router.post('/', async (req,res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    let category = await Category.findOne({ _id: new ObjectId(req.body.category_id) });
+    let category = await Category.findOne({ _id: ObjectId(req.body.category_id) });
     if (!category) {
         return res.status(404).send("No category with given id was not found.");
     }
@@ -45,7 +45,7 @@ router.post('/', async (req,res) => {
         description: req.body.description,
         price: req.body.price,
         weight: req.body.weight,
-        category_id: new ObjectId(category._id)
+        category_id: ObjectId(category._id)
     });
 
     try {
@@ -64,7 +64,7 @@ router.put('/:id', async (req,res) => {
         return res.status(404).send('Invalid id was given.');
     }
 
-    let product = await Product.findOne({ _id: new ObjectId(id) })
+    let product = await Product.findOne({ _id: ObjectId(id) })
     if (!product) {
         return res.status(404).send('Product with given id not found.');
     }
