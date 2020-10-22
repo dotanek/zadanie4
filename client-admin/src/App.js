@@ -17,8 +17,67 @@ class App extends Component {
         this.setState({ products:res.data });
       })
       .catch(err => {
-        console.log(err);
+        if (err.response) {
+          console.log(err.response);
+        }
       })
+
+    axios.get('http://localhost:9000/api/categories')
+      .then(res => {
+        this.setState({ categories:res.data });
+      })
+      .catch(err => {
+        if (err.response) {
+          console.log(err.response);
+        }
+      }) 
+
+      axios.get('http://localhost:9000/api/orders')
+      .then(res => {
+        this.setState({ orders:res.data });
+      })
+      .catch(err => {
+        if (err.response) {
+          console.log(err.response);
+        }
+      }) 
+
+      axios.get('http://localhost:9000/api/statuses')
+      .then(res => {
+        this.setState({ statuses:res.data });
+      })
+      .catch(err => {
+        if (err.response) {
+          console.log(err.response);
+        }
+      }) 
+  }
+
+  updateProduct = (p) => {
+    let products = [...this.state.products];
+    let product = products.find(p2 => p2._id === p._id);
+
+    if (!product) {
+      return this.setState({ error:'Product does not exist.' });
+    }
+
+    let productNoId = {
+      name: p.name,
+      category_id: p.category_id,
+      price: p.price,
+      weight: p.weight,
+      description: p.description
+    }
+
+    axios.put(`http://localhost:9000/api/products/${p._id}`,productNoId)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        if (err.response) {
+          console.log(err.response);
+        }
+      });
   }
 
   render() { 
@@ -31,8 +90,20 @@ class App extends Component {
           <Router>
             <Switch>
               <Route exact path="/orders-notrealized" component={OrdersNR}/>
-              <Route exact path="/orders-all" component={OrdersALL}/>
-              <Route path="/" render={() => <Products products={this.state.products}/>}/>
+              <Route path="/orders-all" render={() => {
+                return <OrdersALL
+                  orders={this.state.orders}
+                  statuses={this.state.statuses}
+                  products={this.state.products}
+                />
+              }}/>
+              <Route path="/" render={() => {
+                return <Products
+                  products={this.state.products}
+                  categories={this.state.categories}
+                  updateProduct={(p) => this.updateProduct(p)}
+                />
+              }}/>
             </Switch>
           </Router>
         </Grid>

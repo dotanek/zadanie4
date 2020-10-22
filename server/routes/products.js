@@ -61,18 +61,17 @@ router.put('/:id', async (req,res) => {
     const id = req.params.id;
 
     if (!ObjectId.isValid(id)) {
-        return res.status(404).send('Invalid id was given.');
+        return res.status(400).send('Invalid id was given.');
     }
 
     let product = await Product.findOne({ _id: ObjectId(id) })
     if (!product) {
         return res.status(404).send('Product with given id not found.');
     }
-
     
     let { value,error } = validate.validateUpdateProduct(req.body);
     if (error) {
-        return res.send(error.details[0].message);
+        return res.status(400).send(error.details[0].message);
     }
 
     // Looping through all verified attributes and updaing them in product.

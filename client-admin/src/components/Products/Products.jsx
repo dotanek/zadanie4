@@ -18,7 +18,12 @@ class Products extends Component {
 
         return this.props.products.map(p => {
             return (
-                <Product key={p._id} p={p}/>
+                <Product
+                    key={p._id}
+                    p={p}
+                    categories={this.props.categories}
+                    updateProduct={(p) => this.props.updateProduct(p)}
+                />
             );
         });
     }

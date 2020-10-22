@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { TableRow, TableCell, Button, Input } from '@material-ui/core';
+import { TableRow, TableCell, Button, Input, Select, MenuItem } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
+
+const StyledInput = styled(Input)({
+    fontSize:'14px'
+});
+
+const StyledSelect = styled(Select)({
+    fontSize:'14px'
+});
 
 class Product extends Component {
     state = {
@@ -12,7 +21,7 @@ class Product extends Component {
 
     onClickButtonSave = () => {
         this.setState({ edit:false });
-        //this.props.updateProduct()
+        this.props.updateProduct(this.state.product);
     }
 
     renderButtons = () => {
@@ -39,11 +48,39 @@ class Product extends Component {
         );
     }
 
+    renderCategory = () => {
+        if (!this.props.categories) {
+            return 'Unknown category';
+        }
+
+        let { category_id } = this.state.product;
+        let category = this.props.categories.find(c => c._id === category_id);
+
+        if (!category) {
+            return 'Unknown category';
+        }
+
+        return category.name;
+    }
+
+    renderCategoriesList = () => {
+        return (
+            <StyledSelect
+                value={this.state.product.category_id}
+                onChange={this.onChangeCategoryValue}
+            >
+                {this.props.categories.map(c => {
+                    return <MenuItem key={c._id} value={c._id}>{c.name}</MenuItem>
+                })}
+            </StyledSelect>
+        );
+    }
+
     renderNormalMode = () => {
         return ( 
             <TableRow>
                 <TableCell>{this.state.product.name}</TableCell>
-                <TableCell>{this.state.product.category_id}</TableCell>
+                <TableCell>{this.renderCategory()}</TableCell>
                 <TableCell>{this.state.product.price}</TableCell>
                 <TableCell>{this.state.product.weight}</TableCell>
                 <TableCell>{this.state.product.description}</TableCell>
@@ -88,35 +125,36 @@ class Product extends Component {
         return ( 
             <TableRow>
                 <TableCell>
-                    <Input 
+                    <StyledInput 
                         value={this.state.product.name}
                         onChange={this.onChangeNameValue}
                         fullWidth
                     />
                 </TableCell>
                 <TableCell>
-                    <Input
+                    {/*<StyledInput
                         value={this.state.product.category_id}
                         fullWidth
                         onChange={this.onChangeCategoryValue}
-                    />
+                    />*/}
+                    {this.renderCategoriesList()}
                 </TableCell>
                 <TableCell>
-                    <Input
+                    <StyledInput
                         value={this.state.product.price}
                         fullWidth
                         onChange={this.onChangePriceValue}
                     />
                 </TableCell>
                 <TableCell>
-                    <Input
+                    <StyledInput
                         value={this.state.product.weight}
                         fullWidth
                         onChange={this.onChangeWeightValue}
                     />
                 </TableCell>
                 <TableCell>
-                    <Input
+                    <StyledInput
                         value={this.state.product.description}
                         fullWidth
                         onChange={this.onChangeDescriptionValue}

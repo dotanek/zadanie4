@@ -48,9 +48,6 @@ module.exports.validateUpdateProduct = validateUpdateProduct;
 const orderCommonFields = {
     date: Joi.date(),
 
-    /*status_id: Joi.objectId()
-        .required(),*/
-
     username: Joi.string()
         .min(1)
         .required(),
