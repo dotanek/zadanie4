@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 const validate = require('../validate');
+var cors = require('cors')
 
 const Order = require('../models/order');
 const Product = require('../models/product');
@@ -15,7 +16,18 @@ router.get('/', async (req,res) => {
     res.send(orders);
 });
 
-router.put('/:id', async (req,res) => {
+var whitelist = ['http://localhost:3001']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+router.put('/:id', cors(corsOptions), async (req,res) => {
     const id = req.params.id;
 
     if (!ObjectId.isValid(id)) {
