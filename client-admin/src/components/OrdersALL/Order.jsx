@@ -48,6 +48,8 @@ class Order extends Component {
         if (!this.props.o.date) {
             return 'No date.';
         }
+
+        return this.props.o.date;
     }
 
     render() { 

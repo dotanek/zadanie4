@@ -20,11 +20,21 @@ class App extends Component {
         if (err.response) {
           console.log(err.response);
         }
-      })
+      });
 
     axios.get('http://localhost:9000/api/categories')
       .then(res => {
         this.setState({ categories:res.data });
+      })
+      .catch(err => {
+        if (err.response) {
+          console.log(err.response);
+        }
+      });
+
+      axios.get('http://localhost:9000/api/statuses')
+      .then(res => {
+        this.setState({ statuses: res.data });
       })
       .catch(err => {
         if (err.response) {
@@ -40,17 +50,7 @@ class App extends Component {
         if (err.response) {
           console.log(err.response);
         }
-      }) 
-
-      axios.get('http://localhost:9000/api/statuses')
-      .then(res => {
-        this.setState({ statuses:res.data });
-      })
-      .catch(err => {
-        if (err.response) {
-          console.log(err.response);
-        }
-      }) 
+      });
   }
 
   updateProduct = (p) => {
@@ -80,6 +80,60 @@ class App extends Component {
       });
   }
 
+  confirmOrder = (o) => {
+    const realized = this.state.statuses.find(s => s.name === 'REALIZED');
+    if (!realized) {
+      return this.setState({ error:'Status "REALIZED" not found' });
+    }
+
+    let orders = [...this.state.orders];
+    let order = orders.find(o2 => o2._id === o._id);
+
+    if (!order) {
+      return this.setState({ error: 'Order does not exist.' });
+    }
+
+    order.status_id = realized._id;
+   
+    axios.put(`http://localhost:9000/api/orders/${o._id}`, { "status_id":order.status_id })
+      .then(res => {
+        console.log(res);
+        this.setState({ orders });
+      })
+      .catch(err => {
+        if (err.response) {
+          console.log(err.response)
+        }
+      });
+  }
+
+  cancelOrder = (o) => {
+    const canceled = this.state.statuses.find(s => s.name === 'CANCELED');
+    if (!canceled) {
+      return this.setState({ error:'Status "CANCELED" not found' });
+    }
+
+    let orders = [...this.state.orders];
+    let order = orders.find(o2 => o2._id === o._id);
+
+    if (!order) {
+      return this.setState({ error: 'Order does not exist.' });
+    }
+
+    order.status_id = canceled._id;
+   
+    axios.put(`http://localhost:9000/api/orders/${o._id}`, { "status_id":order.status_id })
+      .then(res => {
+        console.log(res);
+        this.setState({ orders });
+      })
+      .catch(err => {
+        if (err.response) {
+          console.log(err.response)
+        }
+      });
+  }
+
   render() { 
     return (
       <Grid container direction="column">
@@ -89,7 +143,15 @@ class App extends Component {
         <Grid item container>
           <Router>
             <Switch>
-              <Route exact path="/orders-notrealized" component={OrdersNR}/>
+            <Route path="/orders-notrealized" render={() => {
+                return <OrdersNR
+                  orders={this.state.orders}
+                  statuses={this.state.statuses}
+                  products={this.state.products}
+                  confirmOrder={this.confirmOrder}
+                  cancelOrder={this.cancelOrder}
+                />
+              }}/>
               <Route path="/orders-all" render={() => {
                 return <OrdersALL
                   orders={this.state.orders}
